@@ -3,6 +3,7 @@
 #include <iostream>
 #include <ctime>
 #include <cassert>
+#include <vector>
 using namespace std;
 
 class Matrix{
@@ -10,6 +11,9 @@ private:
     int m, n;
     char **matrix;
 public:
+    Matrix(){
+        Matrix(0, 0);
+    }
     Matrix(int m, int n){
         this->m = m;
         this->n = n;
