@@ -1,0 +1,130 @@
+\documentclass[a4paper, 12pt, oneside]{scrartcl}
+%\documentclass[a4paper, 12pt, oneside]{ncc}
+\usepackage[warn]{mathtext}          % русские буквы в формулах, с предупреждением
+\usepackage[T2A]{fontenc}            % внутренняя кодировка  TeX
+\usepackage[utf8x]{inputenc}         % кодовая страница документа
+\usepackage[english, russian]{babel} % локализация и переносы
+\usepackage{indentfirst}   % русский стиль: отступ первого абзаца раздела
+\usepackage{misccorr}      % точка в номерах заголовков
+\usepackage{cmap}          % русский поиск в pdf
+\usepackage{graphicx}      % Работа с графикой \includegraphics{}
+\usepackage{psfrag}        % Замена тагов на eps картинкаx
+\usepackage{caption2}      % Работа с подписями для фигур, таблиц и пр.
+\usepackage{soul}          % Разряженный текст \so{} и подчеркивание \ul{}
+\usepackage{soulutf8}      % Поддержка UTF8 в soul
+\usepackage{fancyhdr}      % Для работы с колонтитулами
+\usepackage{multirow}      % Аналог multicolumn для строк
+\usepackage{amsmath, amssymb}
+
+\begin{document}
+
+\section{Алгоритм AD}
+
+Алгоритм AD реализован на языке C++. На вход подается бинарная матрица и минимальная поддержка. В текущей реализации используется не чисто бинарная матрица (как у П. А. Прокофьева в RUNC-M), а матрица из байтов. Пример работы алгоритма:
+
+\subsection{Пример 1}
+
+\textbf{Вход:}
+\begin{equation}
+\begin{pmatrix} 
+  0 & 1 & 0 & 1 & 1 & 1\\ 
+  0 & 1 & 0 & 1 & 1 & 0\\ 
+  0 & 1 & 1 & 1 & 1 & 0\\ 
+  1 & 0 & 1 & 1 & 1 & 0\\ 
+  0 & 0 & 1 & 1 & 1 & 1\\ 
+  1 & 1 & 1 & 1 & 0 & 0
+\end{pmatrix}
+\end{equation}
+
+\quad Минимальная поддержка s = 3.
+
+\textbf{Выход:}
+
+\quad Всего наборов: 11
+
+\qquad 1
+
+\qquad 1 3
+
+\qquad 1 3 4
+
+\qquad 1 4
+
+\qquad 2 3
+
+\qquad 2 3 4
+
+\qquad 2 4
+
+\qquad 3
+
+\qquad 3 4
+
+\qquad 4
+
+\quad Максимальных наборов: 2
+
+\qquad 1 3 4
+
+\qquad 2 3 4
+
+\subsection{Пример 2}
+
+\textbf{Вход:}
+\begin{equation}
+\begin{pmatrix} 
+  0 & 1 & 1 & 1 & 0 & 0\\ 
+  1 & 0 & 0 & 1 & 1 & 1\\ 
+  0 & 0 & 0 & 1 & 1 & 1\\ 
+  1 & 1 & 0 & 1 & 1 & 1\\ 
+  1 & 0 & 0 & 0 & 0 & 1\\ 
+  0 & 0 & 0 & 0 & 1 & 0
+\end{pmatrix}
+\end{equation}
+
+\quad Минимальная поддержка s = 3.
+
+\textbf{Выход:}
+
+\quad Всего наборов: 9
+
+\qquad 0
+
+\qquad 0 5
+
+\qquad 3
+
+\qquad 3 4
+
+\qquad 3 4 5
+
+\qquad 3 5
+
+\qquad 4
+
+\qquad 4 5
+
+\qquad 5
+
+\quad Максимальных наборов: 2
+
+\qquad 0 5
+
+\qquad 3 4 5
+
+\section{Скорость счёта}
+
+Множество всех s-совместимых наборов строилось строго по алгоритму. Множество максимальных наборов строилось тогда, когда алгоритм не мог найти следующий совместимый столбец. В этом случае максимальность проверялась по базе данных (модификация была предложена Н. А. Драгуновым в курсовой работе). Результаты счёта приведены в таблице:
+
+\begin{table}[h!]
+\begin{tabular}{|c|c|c|}
+\hline
+                  & \textbf{n = 20}                                        & \textbf{n = 30}                                         \\ \hline
+\textbf{m = 100}  & \begin{tabular}[c]{@{}c@{}}747,\\ 72 мс\end{tabular}   & \begin{tabular}[c]{@{}c@{}}3400,\\ 489 мс\end{tabular}  \\ \hline
+\textbf{m = 1000} & \begin{tabular}[c]{@{}c@{}}1136,\\ 764 мс\end{tabular} & \begin{tabular}[c]{@{}c@{}}4042,\\ 3649 мс\end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+
+Здесь m - число транзакций (строк), n - число атрибутов (столбцов). Минимальная поддержка s = 0.1. В первой строке указано число всех максимальных частых наборов, во второй строке - время работы алгоритма. Сравнивая с результатами Н. А. Драгунова можно сделать вывод, что алгоритм AD работает быстрее DepthProject без модификации, но медленнее DepthProject с модификацией. Однако текущая реализация алгоритма AD далека от оптимальной, и есть надежда, что результаты можно улучшить.
+
+\end{document}
