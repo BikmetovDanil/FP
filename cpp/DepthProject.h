@@ -49,10 +49,7 @@ class DepthProject{
 private:
     Matrix matrix;
     typedef vector<int> cols;
-    typedef vector<int> rows;
     typedef vector<column> database;
-    vector<cols> all_cols;
-    vector<cols> max_cols;
     int s;
     Node tree;
     int count = 0, max_count = 0;
@@ -67,7 +64,10 @@ private:
             DepthFirst(N->add(E[i]), T, B);
         }
         if(E.size() == 0){
-            if(isMax(N, B)) max_count++;
+            if(isMax(N, B)){
+                max_cols.push_back(N->cols);
+                max_count++;
+            }
         }
     }
     cols GenerateCandidates(Node* N){
@@ -121,11 +121,13 @@ private:
         return true;
     }
 public:
+    vector<cols> all_cols;
+    vector<cols> max_cols;
     DepthProject(Matrix& matrix, int s){
         this->matrix = matrix;
         this->s = s;
     }
-    // Возвращает время в микросекундах
+    // Возвращает время в миллисекундах
     int run(){
         int start = clock();
         count = 0;
@@ -139,7 +141,7 @@ public:
         DepthFirst(&tree, T, B);
         int end = clock();
         // cout << "На самом деле частых наборов: " << counter << endl;
-        return (end - start) * 1000000 / CLOCKS_PER_SEC;
+        return (end - start) * 1000 / CLOCKS_PER_SEC;
     }
     void printAllCols(){
         tree.print();

@@ -5,15 +5,15 @@ private:
     Matrix matrix;
     column mask;
     typedef vector<int> cols;
-    vector<cols> all_cols;
-    vector<cols> max_cols;
     int s;
 public:
+    vector<cols> all_cols;
+    vector<cols> max_cols;
     AD(Matrix& matrix, int s){
         this->matrix = matrix;
         this->s = s;
     }
-    // Возвращает время работы в микросекундах
+    // Возвращает время работы в миллисекундах
     int run(){
         Matrix tmp;
         Matrix p;
@@ -77,7 +77,7 @@ public:
         }
         if(isMax(Q)) max_cols.push_back(Q);
         int end = clock();
-        return (end - start) * 1000000 / CLOCKS_PER_SEC;
+        return (end - start) * 1000 / CLOCKS_PER_SEC;
     }
     bool isMax(cols col){
         mask.reset();
@@ -92,9 +92,6 @@ public:
             }else i++;
         }
         return true;
-    }
-    bool isMax(cols col, vector<cols> mc){
-        return false;
     }
     void printAllCols(){
         if(all_cols.empty()) return;

@@ -1,11 +1,12 @@
 #pragma once
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <bitset>
 
 using namespace std;
-const int m = 6000, n = 20;
+const int m = 40, n = 44;
 using column = std::bitset<m>;
 
 class Matrix{
@@ -21,6 +22,59 @@ public:
         for(int i = 0; i < m; i++){
             for(int j = 0; j < n; j++){
                 if(rand() % 2) matrix[j].set(i);
+            }
+        }
+    }
+    void toFile(const string path) const{
+        std::ofstream out;
+        out.open(path);
+        if(out.is_open()){
+            for(int i = 0; i < m; i++){
+                for(int j = 0; j < n; j++){
+                    out << (int) matrix[j][i] << ' ';
+                }
+                out << endl;
+            }
+        }else{
+            cout << "Can't open file" << endl;
+        }
+    }
+    void toFileForFP(const string path) const{
+        std::ofstream out;
+        out.open(path);
+        if(out.is_open()){
+            out << n << endl;
+            out << m << endl;
+            for(int i = 0; i < m; i++){
+                for(int j = 0; j < n; j++){
+                    out << (int) matrix[j][i];
+                    if(j != n - 1) out << ',';
+                }
+                out << endl;
+            }
+        }else{
+            cout << "Can't open file" << endl;
+        }
+    }
+    void readFrom(const string path){
+        string line;
+        std::ifstream in(path);
+        if (in.is_open()){
+            while (getline(in, line)){
+                cout << line << endl;
+            }
+        }
+        in.close();
+    }
+    void readFromFile(const char* fname){
+        FILE * matrix_;
+        char c;
+        int k;
+        matrix_ = fopen(fname, "r");
+        for(int i = 0; i < m; ++i){
+            for(int j = 0; j < n; ++j){
+                fscanf(matrix_, "%d", &k);
+                if(k) matrix[j].set(i);
             }
         }
     }
